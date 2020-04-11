@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haiyu.manager.dao.SwSwitchMapper">
+    <resultMap id="BaseResultMap" type="com.haiyu.manager.pojo.SwSwitch">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        
+        <result column="app_id" jdbcType="INTEGER" property="appId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="name_key" jdbcType="VARCHAR" property="nameKey" />
+        <result column="name_desc" jdbcType="VARCHAR" property="nameDesc" />
+        <result column="owner_email" jdbcType="VARCHAR" property="ownerEmail" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="type" jdbcType="INTEGER" property="type" />
+        <result column="createtime" jdbcType="VARCHAR" property="createtime" />
+        <result column="updatetime" jdbcType="VARCHAR" property="updatetime" />
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,app_id,name,name_key,name_desc,owner_email,status,type,createtime,updatetime
+    </sql>
+
+    <select id="getSwSwitchList" resultType="com.haiyu.manager.pojo.SwSwitch">
+        SELECT  id,app_id AS appId,name,name_key AS nameKey,name_desc AS nameDesc,owner_email AS ownerEmail,status,type,createtime,updatetime
+        FROM sw_switch
+        <where>
+            <if test="name != null and name != '' ">
+                 <!--and name LIKE '%' #{name} '%'-->
+               and  name = #{name}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateSwSwitch">
+        UPDATE sw_switch
+        <set>
+            <if test="appId != null">
+                app_id = #{appId},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="nameKey != null">
+                name_key = #{nameKey},
+            </if>
+            <if test="nameDesc != null">
+                name_desc = #{nameDesc}
+            </if>
+            <!--sql语句过长，后面的语句报错-->
+           <!-- <if test="ownerEmail != null">
+                owner_email = #{ownerEmail}
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+            <if test="type != null">
+                type = #{type}
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime}
+            </if>-->
+        </set>
+        WHERE id = #{id}
+    </update>
+
+</mapper>

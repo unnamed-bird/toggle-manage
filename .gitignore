@@ -1,0 +1,18 @@
+# IntelliJ IDEA project files and directories
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Build targets
+/target
+*/target
+
+# "temporary" build files
+target/
+out/
+build/
+dist/
+classes/
+logs/
+

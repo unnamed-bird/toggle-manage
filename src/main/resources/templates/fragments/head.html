@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org"
+       xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<body>
+<header th:fragment="header">
+    <div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <a href="javascript:;" class="layui-hide-xs"><a href="/home" style="font-weight: bold;"><div class="layui-logo">后台管理系统</div></a>
+        </a>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+
+                <!--<li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">系统管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/toggle/toggleManage">开关管理</a></dd>
+                    </dl>
+                </li>-->
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="/toggle/toggleManage">开关管理</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    <!--注释掉js，避开根据权限生成菜单，相反可以把菜单直接写入html中-->
+    <!--<script type="text/javascript" src="/js/head.js"></script>-->
+</header>
+</body>
+</html>
