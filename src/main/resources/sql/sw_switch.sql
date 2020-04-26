@@ -15,5 +15,11 @@ CREATE TABLE `sw_switch` (
     KEY `IX_Name` (`name_key`(64))
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='开关表';
 
-INSERT INTO `sw_switch` VALUES(1,2,'switch1', 'key_1' , '开关一', '1044121990@qq.com',-1,1, '2020-4-11','2020-4-11');
+/*INSERT INTO `sw_switch` VALUES(1,2,'switch1', 'key_1' , '开关一', '1044121990@qq.com',-1,1, '2020-4-11','2020-4-11');
 INSERT INTO `sw_switch` VALUES(2,2,'switch2', 'key_2' , '开关二', '321'           , 1,4, '2020-4-11','2020-4-11');
+*/
+
+INSERT INTO `sw_switch` (`id`,`app_id`,`name`,`name_key`,`name_desc`,`owner_email`,`status`,`type`,`createtime`,`updatetime`) VALUES (1,2,'switch1','key_1','开关一','1044121991@qq.com',-1,1,'2020-04-11 00:00:00','2020-04-11 00:00:00');
+INSERT INTO `sw_switch` (`id`,`app_id`,`name`,`name_key`,`name_desc`,`owner_email`,`status`,`type`,`createtime`,`updatetime`) VALUES (2,2,'switch2','key_2','开关二','321456',1,1,'2020-04-11 00:00:00','2020-04-11 00:00:00');
+INSERT INTO `sw_switch` (`id`,`app_id`,`name`,`name_key`,`name_desc`,`owner_email`,`status`,`type`,`createtime`,`updatetime`) VALUES (3,4,'aaa','321','232dedw','1',1,2,'2020-01-01 00:00:00','2020-01-01 00:00:00');
+INSERT INTO `sw_switch` (`id`,`app_id`,`name`,`name_key`,`name_desc`,`owner_email`,`status`,`type`,`createtime`,`updatetime`) VALUES (4,2,'bbb','321','1111','111',1,3,'2020-04-25 17:57:43','2020-04-25 17:57:43');

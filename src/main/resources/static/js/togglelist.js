@@ -56,7 +56,7 @@ $(function() {
             }
         });
 
-        //监听工具条
+        //监听开关表格工具条
         table.on('tool(toggleTable)', function(obj){
             var data = obj.data;
             if(obj.event === 'del'){
@@ -66,7 +66,7 @@ $(function() {
                 //编辑,根据type生成不同的开关规则表格
                 //渲染开关规则页信息
                 //var switchSearchId = data.id;
-                //每次编辑重载规则表格
+                //每次编辑开关时，渲染规则表格
                 //loadrules(data.id);
                 if(data.type==1||data.type==3){
                 tableIns2=table.render({
@@ -91,6 +91,7 @@ $(function() {
                                           cols: [[
                                                   {field:'id', title:'id',align:'center',width : 50}
                                                   ,{field:'rule', title: '开关规则',align:'center'}
+                                                  ,{title:'操作',align:'center', toolbar:'#ruleOptBar',width : 150}
                                            ]],
                                  });
                 }else{
@@ -117,6 +118,7 @@ $(function() {
                                                   {field:'id', title:'id',align:'center',width : 50}
                                                   ,{field:'rule', title: '开关规则',align:'center'}
                                                   ,{field:'sort', title: 'sort',align:'center',sort:true}
+                                                  ,{title:'操作',align:'center', toolbar:'#ruleOptBar',width : 150}
                                            ]],
                                  });
                 }
@@ -124,11 +126,26 @@ $(function() {
                 openSwSwitch(data,"编辑");
             }
         });
+        //监听开关规则工具条
+        table.on('tool(rulesTable)',function(obj){
+            var data = obj.data;
+            if(obj.event === 'del'){
+                delRule(data,data.id);
+            }else if(obj.event === 'edit'){
+                edit(data,"编辑");
+            }
+        });
 
-        //监听提交
+        //监听开关提交
         form.on('submit(SwSwitchSubmit)', function(data){
             // TODO 校验
             formSubmit(data);
+            return false;
+        });
+        //监听开关规则提交
+        form.on('submit(ruleSubmit)', function(data){
+            // TODO 校验
+            ruleFormSubmit(data);
             return false;
         });
     });
@@ -162,7 +179,7 @@ function addSwSwitch(){
     openSwSwitch(null,"添加开关");
 }
 
-//添加和编辑操作
+//添加和编辑开关操作
 function openSwSwitch(data,title){
      //没有数据，说明是要新建操作
     if(data==null || data==""){
@@ -209,7 +226,7 @@ function openSwSwitch(data,title){
           fixed:false,//固定在可视区域
           resize :false,//是否允许拉伸
           shadeClose: true,//点击遮罩关闭
-          area: ['550px','400px'],
+          area: ['650px','400px'],
           content:$('#demo'),//可以传入普通的html内容，还可以指定DOM.这里content是一个DOM，是一个html界面接口
           //clear操作,新建后，再次点击新建，表格内容清空
           end:function(){
@@ -217,6 +234,41 @@ function openSwSwitch(data,title){
           }
     });
 
+}
+
+//编辑开关规则
+//此处如果能传入type，可以根据type显示不同的规则编辑框
+function edit(data,title){
+     //没有数据，说明是要新建操作
+    if(data==null || data==""){
+        $("#id").val("");
+    }else{
+        $("#ruleId").val(data.id);
+
+        $("#appId").val(data.appId);
+        $("#switchId").val(data.switchId);
+        $("#rule").val(data.rule);
+        $("#sort").val(data.sort);
+        $("#status").val(data.status);
+        $("#createtime").val(data.createtime);
+        $("#updatetime").val(data.updatetime);
+    }
+    var pageNum = $(".layui-laypage-skip").find("input").val();
+    $("#pageNum").val(pageNum);
+
+    layer.open({
+        type:1,
+        title: title,
+        fixed:false,//固定在可视区域
+        resize :false,//是否允许拉伸
+        shadeClose: true,//点击遮罩关闭
+        area: ['650px','400px'],
+        content:$('#setSwSwitchRules'),//可以传入普通的html内容，还可以指定DOM.这里content是一个DOM，是一个html界面接口
+        //clear操作,新建后，再次点击新建，表格内容清空
+        end:function(){
+            cleanRuleForm();
+        }
+    });
 }
 //提交开关信息表单
 function formSubmit(obj){
@@ -245,6 +297,39 @@ function formSubmit(obj){
     });
 }
 
+//提交开关规则信息表单
+function ruleFormSubmit(obj){
+    $.ajax({
+        type: "POST",
+        //往后台传输数据（对应实体类参数）时，表单中各项的name属性尽量与实体类中变量名相同
+        data: $("#SwSwitchRulesForm").serialize(),//发送到服务器的数据
+        url: "/toggle/setSwSwitchRule",//向后端发送请求的地址
+        success: function (data) {
+            if (data.code == 1) {
+                layer.alert(data.msg,function(){
+                    layer.closeAll();
+                    //暂时未发现不刷新表格有啥问题。由于关闭了所有弹窗，通过点击编辑再次进入开关规则，已经重新渲染表格
+                    /*tableIns2.reload({
+                            where: {
+                            switchSearchId: id
+                            }
+                            , page: {
+                                curr: pageCurr //从当前页码开始
+                            }
+                        });*/
+                });
+            } else {
+                layer.alert(data.msg);
+            }
+        },
+        error: function () {
+            layer.alert("操作请求错误，请您稍后再试",function(){
+                layer.closeAll();
+            });
+        }
+    });
+}
+
 function del(obj,id,name) {
     if(null!=id){
       layer.confirm('您确定要删除'+name+'吗？', {
@@ -266,6 +351,44 @@ function del(obj,id,name) {
     }
 
 
+}
+
+function delRule(obj,id) {
+    if(null!=id){
+      layer.confirm('您确定要删除'+id+'吗？', {
+                      btn: ['确认','返回'] //按钮
+                  }, function(){
+                      $.post("/toggle/delRule",{"id":id },function(data){
+                          if (data.code == 1) {
+                              layer.alert(data.msg,function(index){
+                                  layer.closeAll();
+                                  //load(obj);
+                                  //刷新表格，关闭alert弹窗.应该用开关表的type判断重载哪个表格。需要获取开关表的type，暂时不知道怎样得到。暂且关掉全部弹窗算了
+
+                                      /*tableIns3.reload({
+                                          where: data.field
+                                          , page: {
+                                              curr: pageCurr //从当前页码开始
+                                          }
+                                      });
+                                      tableIns2.reload({
+                                          where: data.field
+                                          , page: {
+                                              curr: pageCurr //从当前页码开始
+                                          }
+                                      });*/
+                                  layer.close(index);
+                              });
+                          } else {
+                              layer.alert(data.msg,function(index){
+                              layer.close(index);
+                              });
+                          }
+                      });
+                  }, function(){
+                      //layer.closeAll();
+                  });
+    }
 }
 
 function load(obj){
@@ -292,6 +415,7 @@ function loadrules(id){
     });
 }
 
+
 //清空表单，文明注册，不留垃圾
 function cleanForm(){
      $("#id").val("");
@@ -304,6 +428,16 @@ function cleanForm(){
      $("#swSwitchtype").val("");
      $("#swSwitchcreatetime").val("");
      $("#swSwitchupdatetime").val("");
+}
+function cleanRuleForm(){
+     $("#id").val("");
+     $("#appId").val("");
+     $("#switchId").val("");
+     $("#rule").val("");
+     $("#sort").val("");
+     $("#status").val("");
+     $("#createtime").val("");
+     $("#updatetime").val("");
 }
 
 

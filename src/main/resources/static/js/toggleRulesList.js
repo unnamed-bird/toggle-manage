@@ -185,8 +185,6 @@ function del(obj,id) {
                       layer.closeAll();
                   });
     }
-
-
 }
 
 function load(obj){
