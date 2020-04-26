@@ -20,7 +20,7 @@ public class IndexController {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
-    @RequestMapping("home")
+    @RequestMapping({"home","/"})
     public String home(){
         logger.info("定向主页");
         return "home";

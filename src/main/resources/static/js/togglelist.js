@@ -1,9 +1,10 @@
 var pageCurr;
 var form;
 $(function() {
-    layui.use('table', function(){
+    layui.use(['table','element'], function(){
         var table = layui.table;
         form = layui.form;
+        var element = layui.element;
 
         tableIns=table.render({
             elem: '#toggleList',
@@ -62,7 +63,64 @@ $(function() {
                 //删除
                 del(data,data.id,data.name);
             } else if(obj.event === 'edit'){
-                //编辑
+                //编辑,根据type生成不同的开关规则表格
+                //渲染开关规则页信息
+                //var switchSearchId = data.id;
+                //每次编辑重载规则表格
+                //loadrules(data.id);
+                if(data.type==1||data.type==3){
+                tableIns2=table.render({
+                                          elem: '#rulesList',
+                                          url:'/toggle/getSwSwitchRulesList',
+                                          method: 'post', //默认：get请求
+                                          cellMinWidth: 50,
+                                          page: true,
+                                          where:{
+                                              switchSearchId: data.id
+                                          },
+                                          request: {
+                                               pageName: 'pageNum', //页码的参数名称，默认：pageNum
+                                               limitName: 'pageSize' ,//每页数据量的参数名，默认：pageSize
+                                          },
+                                          response:{
+                                               statusName: 'code', //数据状态的字段名称，默认：code
+                                               statusCode: 200, //成功的状态码，默认：0
+                                               countName: 'totals', //数据总数的字段名称，默认：count
+                                                dataName: 'list' //数据列表的字段名称，默认：data
+                                          },
+                                          cols: [[
+                                                  {field:'id', title:'id',align:'center',width : 50}
+                                                  ,{field:'rule', title: '开关规则',align:'center'}
+                                           ]],
+                                 });
+                }else{
+                tableIns3=table.render({
+                                          elem: '#rulesList',
+                                          url:'/toggle/getSwSwitchRulesList',
+                                          method: 'post', //默认：get请求
+                                          cellMinWidth: 50,
+                                          page: true,
+                                          where:{
+                                              switchSearchId: data.id
+                                          },
+                                          request: {
+                                               pageName: 'pageNum', //页码的参数名称，默认：pageNum
+                                               limitName: 'pageSize' ,//每页数据量的参数名，默认：pageSize
+                                          },
+                                          response:{
+                                               statusName: 'code', //数据状态的字段名称，默认：code
+                                               statusCode: 200, //成功的状态码，默认：0
+                                               countName: 'totals', //数据总数的字段名称，默认：count
+                                                dataName: 'list' //数据列表的字段名称，默认：data
+                                          },
+                                          cols: [[
+                                                  {field:'id', title:'id',align:'center',width : 50}
+                                                  ,{field:'rule', title: '开关规则',align:'center'}
+                                                  ,{field:'sort', title: 'sort',align:'center',sort:true}
+                                           ]],
+                                 });
+                }
+
                 openSwSwitch(data,"编辑");
             }
         });
@@ -91,6 +149,7 @@ $(function() {
             form.on('submit(toggleSearchSubmit)', function(data){
                 //重新加载table
                 //data数据 参数名字 尽量和 后台 请求的参数 名字一致
+
                 load(data);
                 return false;
             });
@@ -123,30 +182,47 @@ function openSwSwitch(data,title){
         $("#swSwitchtype").val(data.type);
         $("#swSwitchcreatetime").val(data.createtime);
         $("#swSwitchupdatetime").val(data.updatetime);
+
+     //获取到根据开关id查询的开关规则列表数据
+     /* $.ajax({
+          type:"POST",
+          data: {
+          pageNum:pageNum,
+          pageSize:10,
+          switchSearchId:switchSearchId
+          },
+          url: "/toggle/getSwSwitchRulesList",
+          success:function(res){
+          $("#rules").val(res.rule);
+          var rule = res.list.rule;
+          //不用render(),怎样渲染表格
+          loadrules(res);
+          }
+      });*/
     }
     var pageNum = $(".layui-laypage-skip").find("input").val();
-    $("#pageNum").val(pageNum);
-
+        $("#pageNum").val(pageNum);
     //弹出添加开关的页面（与编辑的页面相同）
     layer.open({
-        type:1,//Layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
-        title: title,
-        fixed:false,//固定在可视区域
-        resize :false,//是否允许拉伸
-        shadeClose: true,//点击遮罩关闭
-        area: ['550px','400px'],
-        content:$('#setSwSwitch'),//可以传入普通的html内容，还可以指定DOM.这里content是一个DOM，是一个html界面接口
-        //clear操作,新建后，再次点击新建，表格内容清空
-        end:function(){
-            cleanForm();
-        }
+          type:1,//Layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+          title: title,
+          fixed:false,//固定在可视区域
+          resize :false,//是否允许拉伸
+          shadeClose: true,//点击遮罩关闭
+          area: ['550px','400px'],
+          content:$('#demo'),//可以传入普通的html内容，还可以指定DOM.这里content是一个DOM，是一个html界面接口
+          //clear操作,新建后，再次点击新建，表格内容清空
+          end:function(){
+               cleanForm();
+          }
     });
+
 }
 //提交开关信息表单
 function formSubmit(obj){
     $.ajax({
         type: "POST",
-        //往后台传输数据（对应实体类参数）时，表单中各项的name属性需与实体类中变量名相同
+        //往后台传输数据（对应实体类参数）时，表单中各项的name属性尽量与实体类中变量名相同
         data: $("#SwSwitchForm").serialize(),//发送到服务器的数据
         url: "/toggle/setSwSwitch",//向后端发送请求的地址
         success: function (data) {
@@ -197,6 +273,19 @@ function load(obj){
    //再次强调obj.field属性名字要和后台参数一样，否则后台方法中的参数需要添加注解
     tableIns.reload({
         where: obj.field
+        , page: {
+            curr: pageCurr //从当前页码开始
+        }
+    });
+}
+
+function loadrules(id){
+    //重新加载开关规则列表table
+   //再次强调obj.field属性名字要和后台参数一样，否则后台方法中的参数需要添加注解
+    tableIns2.reload({
+        where: {
+        switchSearchId: id
+        }
         , page: {
             curr: pageCurr //从当前页码开始
         }

@@ -46,8 +46,130 @@
         </script>
     </div>
 
+
+    <!--Tab页-->
+    <div id="demo" class="layer_self_wrap" style="width:600px;display:none;">
+     <div id="tab" class="layui-tab" lay-filter="tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">开关基础信息</li>
+            <li>开关规则信息</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <form class="layui-form layui-form-pane" id="SwSwitchForm" method="post" action="">
+                    <input id="pageNum" type="hidden" name="pageNum"/>
+                    <input id="id" type="hidden" name="id"/>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">appId</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchappId" name="appId" class="layui-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开关名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchName" name="name" class="layui-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开关唯一键</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchNameKey" name="nameKey" class="layui-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开关描述</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchNameDesc" name="nameDesc" class="layui-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">负责人邮箱地址</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchownerEmail" name="ownerEmail" class="layui-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开关状态</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchstatus" name="status" class="layui-input" placeholder="已删除：-1；正常：1" autocomplete="off" >
+                                <!-- <div class="layui-form-mid layui-word-aux">已删除：-1；正常：1</div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开关类型</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchtype" name="type" class="layui-input" autocomplete="off" >
+                                <div class="layui-form-mid layui-word-aux">1:普通开关2:正则匹配3：灰度类型4：百分比类型</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">创建时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="swSwitchcreatetime" name="createtime" class="layui-input" placeholder="yyyy-MM-dd" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">更新时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="swSwitchupdatetime" name="updatetime" class="layui-input" placeholder="yyyy-MM-dd" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block" style="margin-center: 20px;">
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                <button class="layui-btn"  lay-submit="" lay-filter="SwSwitchSubmit">提交</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="layui-tab-item">
+                <!--<form class="layui-form layui-form-pane" id="SwitchRulesForm" method="post" action="">
+                    <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">SwitchId</label>
+                        <div class="layui-input-inline">
+                            <input type="text" readonly="readonly" id="swSwitchId" name="swSwitchId" class="layui-input" autocomplete="off">
+                        </div>
+                    </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">rules</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="rules" name="rules" class="layui-input" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </form>-->
+                <table id="rulesList" lay-filter="rulesTable"></table>
+            </div>
+        </div>
+     </div>
+    </div>
     <!--设置开关信息界面，用来添加或编辑开关-->
-    <div id="setSwSwitch" class="layer_self_wrap" style="width:600px;display:none;">
+    <!--<div id="setSwSwitch" class="layer_self_wrap" style="width:600px;display:none;">
         <form class="layui-form layui-form-pane" id="SwSwitchForm" method="post" action="">
             <input id="pageNum" type="hidden" name="pageNum"/>
             <input id="id" type="hidden" name="id"/>
@@ -96,7 +218,7 @@
                     <label class="layui-form-label">开关状态</label>
                     <div class="layui-input-inline">
                         <input type="text" id="swSwitchstatus" name="status" class="layui-input" placeholder="已删除：-1；正常：1" autocomplete="off" >
-                       <!-- <div class="layui-form-mid layui-word-aux">已删除：-1；正常：1</div>-->
+                       &lt;!&ndash; <div class="layui-form-mid layui-word-aux">已删除：-1；正常：1</div>&ndash;&gt;
                     </div>
                 </div>
             </div>
@@ -135,7 +257,7 @@
             </div>
 
         </form>
-    </div>
+    </div>-->
 
     <script src="/js/toggleList.js"></script>
 </div>

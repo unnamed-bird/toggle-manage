@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haiyu.manager.dao.SwSwitchRulesMapper">
+    <resultMap id="BaseResultMap" type="com.haiyu.manager.pojo.SwSwitchRules">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+
+        <result column="app_id" jdbcType="INTEGER" property="appId" />
+        <result column="switch_id" jdbcType="INTEGER" property="switchId" />
+        <result column="rule" jdbcType="VARCHAR" property="rule" />
+        <result column="sort" jdbcType="INTEGER" property="sort" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="createtime" jdbcType="VARCHAR" property="createtime" />
+        <result column="updatetime" jdbcType="VARCHAR" property="updatetime" />
+    </resultMap>
+
+    <select id="getSwSwitchRulesList" resultType="com.haiyu.manager.pojo.SwSwitchRules">
+        SELECT  id,app_id AS appId,switch_id AS switchId,rule,sort,status,createtime,updatetime
+        FROM sw_switch_rules
+        <where>
+            <if test="switchId != null and switchId != '' ">
+                <!--and name LIKE '%' #{name} '%'-->
+                and  switch_id = #{switchId}
+            </if>
+        </where>
+        <!--WHERE switch_id=#{switchId}-->
+    </select>
+
+</mapper>
