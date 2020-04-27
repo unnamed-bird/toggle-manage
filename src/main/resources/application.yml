@@ -7,9 +7,9 @@ spring:
       name: haiyu
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/haiyu?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
-      username: root
-      password: 123456
+      url: jdbc:mysql://sh-cynosdbmysql-grp-9fgh7n0e.sql.tencentcdb.com:26675/ccSwitcher
+      username: mqq
+      password: myCynosdb2020
       initial-size: 1
       min-idle: 1
       max-active: 20

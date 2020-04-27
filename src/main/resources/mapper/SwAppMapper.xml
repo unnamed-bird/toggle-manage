@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haiyu.manager.dao.SwAppMapper">
+    <resultMap id="BaseResultMap" type="com.haiyu.manager.pojo.SwApp">
+        <id column="id" jdbcType="INTEGER" property="id" />
+
+        <result column="app_name" jdbcType="VARCHAR" property="appName" />
+        <result column="app_namespace" jdbcType="VARCHAR" property="appNameSpace" />
+        <result column="app_desc" jdbcType="VARCHAR" property="appDesc" />
+        <result column="owner_name" jdbcType="VARCHAR" property="ownerName" />
+        <result column="owner_email" jdbcType="VARCHAR" property="ownerEmail" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="createtime" jdbcType="VARCHAR" property="createtime" />
+        <result column="updatetime" jdbcType="VARCHAR" property="updatetime" />
+    </resultMap>
+
+    <select id="getSwAppList" resultType="com.haiyu.manager.pojo.SwApp">
+        SELECT  id,app_name AS appName,app_namespace AS appNameSpace,app_desc AS appDesc, owner_name AS ownerName,owner_email AS ownerEmail,status,createtime,updatetime
+        FROM sw_app
+        <where>
+            <if test="appName != null and appName != '' ">
+                and  app_name = #{appName}
+            </if>
+        </where>
+    </select>
+
+</mapper>
